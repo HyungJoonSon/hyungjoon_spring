@@ -9,12 +9,10 @@ import lombok.RequiredArgsConstructor;
 public class UserDto {
     private Long id;
     private String name;
-    private String introduction;
 
     @Builder
-    public UserDto(Long id, String name, String introduction) {
+    public UserDto(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.introduction = introduction;
     }
 }
