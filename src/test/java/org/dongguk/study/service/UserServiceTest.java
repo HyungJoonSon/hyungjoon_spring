@@ -1,10 +1,7 @@
 package org.dongguk.study.service;
 
-import org.dongguk.study.dto.UserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
 
