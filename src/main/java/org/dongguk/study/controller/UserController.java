@@ -2,30 +2,33 @@ package org.dongguk.study.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dongguk.study.dto.UserDto;
+import org.dongguk.study.dto.request.UserRequestDto;
+import org.dongguk.study.dto.response.UserResponseDto;
 import org.dongguk.study.service.UserService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/user")
-    public UserDto readUserProfile() {
+    @GetMapping("")
+    public UserResponseDto readUserProfile() {
         return userService.readUserProfile(1L);
     }
 
-    @PutMapping("/user")
-    public UserDto updateUserProfile() {
-        return userService.updateUserProfile(1L, "수정이용");
+    @GetMapping("/{userId}")
+    public UserResponseDto readUserProfile(@PathVariable Long userId) {
+        return userService.readUserProfile(userId);
     }
 
-    @DeleteMapping("/user")
+    @PutMapping("")
+    public UserResponseDto updateUserProfile(@RequestBody UserRequestDto requestDto) {
+        return userService.updateUserProfile(1L, "requestDto");
+    }
+
+    @DeleteMapping("")
     public Boolean deleteUserProfile() {
         return userService.deleteUserProfile(1L);
     }
