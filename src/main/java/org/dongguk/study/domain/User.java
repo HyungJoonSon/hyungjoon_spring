@@ -48,6 +48,9 @@ public class User {
     @Column(name = "created_date")
     private Timestamp createdDate;
 
+    @Column(name = "is_login")
+    private boolean isLogin;
+
     @Column(name = "refresh_token")
     private String refreshToken;
 
@@ -61,6 +64,7 @@ public class User {
         this.provider = provider;
         this.role = role;
         this.nickname = nickname;
+        this.isLogin = true;
         this.createdDate = Timestamp.valueOf(LocalDateTime.now());
         this.refreshToken = null;
     }
@@ -71,6 +75,10 @@ public class User {
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void updateLogin(boolean isLogin) {
+        this.isLogin = isLogin;
     }
 
     public UserResponseDto toDto() {

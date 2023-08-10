@@ -64,27 +64,21 @@ public class AuthService {
             throw new RuntimeException("잘못된 소셜 로그인입니다.");
         }
 
-        Optional<User> loginUser = userRepository.findBySocialIdAndProvider(String.valueOf(userInfo.get("id")), ELoginProvider.KAKAO);
-
         /* 숫자 12자리 무작위 생성 */
 
 
-        User user = null;
-        if (loginUser.isEmpty()) {
-            user = userRepository.save(User.builder()
-                    .socialId((String) userInfo.get("id"))
-                    .password("dddddddddddddddddddddddddd") // 무작위 생성
-                    .nickname((String) userInfo.get("name"))
-                    .role(EUserRole.USER)
-                    .provider(ELoginProvider.KAKAO).build());
-        } else {
-            user = loginUser.get();
-        }
+        User loginUser = userRepository.findBySocialIdAndProvider(String.valueOf(userInfo.get("id")), ELoginProvider.KAKAO)
+                .orElse(userRepository.save(User.builder()
+                        .socialId((String) userInfo.get("id"))
+                        .password("dddddddddddddddddddddddddd")
+                        .nickname((String) userInfo.get("name"))
+                        .role(EUserRole.USER)
+                        .provider(ELoginProvider.KAKAO).build()));
 
-        map = jwtProvider.createTotalToken(user.getId(), user.getRole());
+        map = jwtProvider.createTotalToken(loginUser.getId(), loginUser.getRole());
 
         // refreshToken 저장 로직 필요
-        user.updateRefreshToken(map.get("refresh_token"));
+        loginUser.updateRefreshToken(map.get("refresh_token"));
 
         return map;
     }
